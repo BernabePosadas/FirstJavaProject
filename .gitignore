@@ -4,3 +4,6 @@ social.jcw
 social2.jcu
 social2.jcw
 src_social.txt
+/App/nbproject/private/
+/App/build/
+/App/dist/
