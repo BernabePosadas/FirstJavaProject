@@ -1,4 +1,5 @@
-import Objects.ProgramUser;
+package Objects;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,6 +9,7 @@ public class LogInWin extends JFrame implements ActionListener {
 	ImageIcon background = new ImageIcon("LogInBack.png");
 	ImageIcon banner = new ImageIcon("HuntersGuildBanner.png");
 	ImageIcon LogInHandler = new ImageIcon("LogInHandler.png");
+        ImageIcon icon = new ImageIcon("icon.png");
 	JLabel handler = new JLabel(LogInHandler);
 	JLabel ban = new JLabel(banner);
 	JLabel back = new JLabel(background);
@@ -27,8 +29,8 @@ public class LogInWin extends JFrame implements ActionListener {
     	this.setLocation(150, 20);
     	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	this.setResizable(false);
-    	content();
-    	setIconImage(ProgramUser.icon.getImage());
+    	this.content();
+    	this.setIconImage(this.icon.getImage());
     	this.setVisible(true);
     	
     }
@@ -37,10 +39,10 @@ public class LogInWin extends JFrame implements ActionListener {
     		IOFileStream io = new IOFileStream();
     		boolean getReply = io.logIn(usern.getText(), pass.getText());
     		if(getReply){
+                        UserSession UserSession = new UserSession();
     			String getUser = usern.getText().substring(0, 1).toUpperCase() + usern.getText().substring(1).toLowerCase();
-    			ProgramUser.CurrentUser = getUser;
-    			ProgramUser.ViewingUser = getUser;
-    			new ProfileViewer();
+    			UserSession.CurrentUser.UserID = getUser;
+    			new ProfileViewer(UserSession.CurrentUser);
     			dispose();
     		}
     		pass.setText("");
@@ -55,7 +57,7 @@ public class LogInWin extends JFrame implements ActionListener {
     	}
     	 
     }
-    void content(){
+    private void content(){
     	Container con = getContentPane();
     	con.setLayout(null);
         back.setBounds(0, 0, this.getWidth(), this.getHeight());

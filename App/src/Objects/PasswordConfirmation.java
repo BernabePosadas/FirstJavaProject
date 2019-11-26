@@ -1,4 +1,5 @@
-import Objects.ProgramUser;
+package Objects;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,6 +9,8 @@ public class PasswordConfirmation extends JDialog implements ActionListener{
 	JLabel lblPass = new JLabel("Password:");
 	JPasswordField pass = new JPasswordField();
 	JButton btnOk = new JButton("OK");
+        ImageIcon icon = new ImageIcon("icon.png");
+        public boolean PasswordConfirmationReply = false;
 
     public PasswordConfirmation() {
     	this.setModal(true);
@@ -15,26 +18,27 @@ public class PasswordConfirmation extends JDialog implements ActionListener{
     	this.setSize(300, 120);
     	this.setLocation(470, 250);
     	this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    	setResizable(false);
-    	content();
-    	setIconImage(ProgramUser.icon.getImage());
-    	setVisible(true);
+    	this.setResizable(false);
+    	this.content();
+    	this.setIconImage(this.icon.getImage());
+    	this.setVisible(true);
     }
+    @Override
     public void actionPerformed(ActionEvent e){
     	if(e.getSource() == btnOk){
     		IOFileStream io = new IOFileStream();
     		boolean checkPass = io.checkPass(pass.getText());
     		if(checkPass){
-    			ProgramUser.PasswordConfirmationReply = true;
+    			this.PasswordConfirmationReply = true;
     			dispose();
     		}else{
     			JOptionPane.showMessageDialog(null, "Password Incorrect", "Change Password" , JOptionPane.ERROR_MESSAGE);
-    			ProgramUser.PasswordConfirmationReply = false;
+    			this.PasswordConfirmationReply = false;
     			dispose();
     		}
     	}
     }
-    void content(){
+    private void content(){
     	Container con = getContentPane();
     	con.setLayout(null);
     	lblPass.setBounds(20, 10, 100, 20);

@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESEncryptionProvider implements IEncryptionProvider {
 
+    @Override
     public byte[] encrypt(EncryptionKeyClass key, byte[] data){
         try {
             Cipher cip = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -21,6 +22,7 @@ public class AESEncryptionProvider implements IEncryptionProvider {
         }
     }
 
+    @Override
     public byte[] decrypt(EncryptionKeyClass key, byte[] data) {
         try {
             Cipher cip = Cipher.getInstance("AES/CBC/PKCS5Padding");

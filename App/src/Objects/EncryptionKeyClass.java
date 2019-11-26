@@ -5,8 +5,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class EncryptionKeyClass {
 
-    private byte[] Key;
-    private byte[] IV;
+    private final byte[] Key;
+    private final byte[] IV;
 
     public EncryptionKeyClass(String Key, String Iv) {
         this.Key = Key.getBytes();

@@ -1,9 +1,11 @@
-import Objects.ProgramUser;
+package Objects;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class AboutWin extends JDialog{
 	ImageIcon background = new ImageIcon("AboutWinBack.png");
+        ImageIcon icon = new ImageIcon("icon.png");
 	ImageIcon HuntersGuildBanner = new ImageIcon("HuntersGuildBannerSmall.png");
 	ImageIcon aboutMascot = new ImageIcon("aboutMascot.png");
 	ImageIcon nekopara = new ImageIcon("nekopara.png");
@@ -19,11 +21,11 @@ public class AboutWin extends JDialog{
 	JLabel message3 = new JLabel("with other hunters who happen to be on the same both");
 	JLabel message4 = new JLabel("as you so why not join the Guild and start your adventure");
 	JLabel message5 = new JLabel("with your newly appointed comrades in arms!!");
-	JLabel message6 = new JLabel("We dont own all images copyright goes to their respective owners:");
+	JLabel message6 = new JLabel("We dont own all images, copyright goes to their respective owners:");
 	JLabel message7 = new JLabel("NEKOWORKS AND CAPCOM");
 	JLabel message8 = new JLabel("Characters belong to: Nekoworks");
 	JLabel message9 = new JLabel("Background and icons: CAPCOM");
-	JLabel message10 = new JLabel("Developed by:");
+	JLabel message10 = new JLabel("Created by:");
 	JLabel message11 = new JLabel("Bernabe Posadas Jr.");
 	JLabel message12 = new JLabel("Johnivan De Mesa");
 
@@ -35,7 +37,7 @@ public class AboutWin extends JDialog{
     	this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	setResizable(false);
     	this.content();
-    	setIconImage(ProgramUser.icon.getImage());
+    	setIconImage(this.icon.getImage());
     	setVisible(true);
     }
     private void content(){

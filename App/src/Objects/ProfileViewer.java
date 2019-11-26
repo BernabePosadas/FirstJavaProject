@@ -1,5 +1,5 @@
+package Objects;
 
-import Objects.ProgramUser;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -9,16 +9,17 @@ import java.io.*;
 
 public class ProfileViewer extends JFrame implements ActionListener {
 
+    UserSession UserSession = new UserSession();
     ImageIcon background = new ImageIcon("ProfileBack.png");
     ImageIcon Handler1 = new ImageIcon("HandlerForUsername.png");
     ImageIcon Handler2 = new ImageIcon("HandlerForUserInfo.png");
     ImageIcon Handler3 = new ImageIcon("PostHandler.png");
     ImageIcon Handler4 = new ImageIcon("SocialStatusHandler.png");
     ImageIcon Handler5 = new ImageIcon("OptionsHandler.png");
+    ImageIcon icon = new ImageIcon("icon.png");
     ImageIcon proPic = new ImageIcon();
     JLabel pic = new JLabel(proPic);
-    ;
-	JLabel OptionsHandler = new JLabel(Handler5);
+    JLabel OptionsHandler = new JLabel(Handler5);
     JLabel SocialStatusHandler = new JLabel(Handler4);
     JLabel PostWallHandler = new JLabel(Handler3);
     JLabel UserInfoHandler = new JLabel(Handler2);
@@ -69,237 +70,178 @@ public class ProfileViewer extends JFrame implements ActionListener {
     JButton globalChat = new JButton("Enter Global Chat");
     JButton removeFriend2 = new JButton("Remove Friend");
 
-    public ProfileViewer() {
+    public ProfileViewer(User user) {
         this.setTitle("Hunter's Guild: Profile Viewer");
         this.setSize(1330, 715);
         this.setLocation(20, 10);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        content();
-        loadInfo();
-        setIconImage(ProgramUser.icon.getImage());
+        this.content();
+        this.loadInfo(user);
+        setIconImage(this.icon.getImage());
         setVisible(true);
     }
 
-    void loadInfo() {
-        IOFileStream io = new IOFileStream();
-        String get = ProgramUser.ViewingUser;
-        String[] Info = io.getInfo(get);
-        String path = io.getImagePath(get);
-        if (Info == null) {
-            JOptionPane.showMessageDialog(null, "Error: getInfo() Returned Null", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+    private void loadInfo(User ViewUser) {
+        ViewUser.buildUser();
+        fullname.setText(ViewUser.FullName);
+        full.setText(ViewUser.FullName);
+        user.setText(ViewUser.UserID);
+        username.setText(ViewUser.UserID);
+        gender.setText(ViewUser.Gender);
+        birthDate.setText(ViewUser.BirthDay);
+        address.setText(ViewUser.Address);
+        proPic = new ImageIcon(ViewUser.ImagePath);
+        pic.setIcon(proPic);
+        pic.setBounds(40, 40, 100, 100);
+        getContentPane().add(pic);
+        this.setBoardContents(ViewUser);
+        if (UserSession.CurrentUser.UserID.equals(ViewUser.UserID)) {
+            btnAdd.setVisible(false);
+            cancelRequest.setVisible(false);
+            Requestlbl.setVisible(true);
+            requestScr.setVisible(true);
+            btnEdit.setVisible(true);
+            btnAccept.setVisible(true);
+            btnReject.setVisible(true);
+            btnRemove.setVisible(true);
+            post.setVisible(true);
+            postArea.setVisible(true);
+            birthDate.setVisible(true);
+            address.setVisible(true);
+            btnPost.setVisible(true);
+            removeFriend2.setVisible(false);
+
+            Requestlbl.setBounds(950, 55, 150, 20);
+            requestScr.setBounds(950, 75, 345, 255);
+            btnAccept.setBounds(990, 330, 140, 20);
+            btnReject.setBounds(1130, 330, 140, 20);
+            Friendslbl.setBounds(950, 360, 150, 20);
+            friendScr.setBounds(950, 380, 350, 270);
+            btnView.setBounds(990, 650, 140, 20);
+            btnRemove.setBounds(1130, 650, 140, 20);
+            btnAdd.setBounds(150, 110, 100, 20);
+            cancelRequest.setBounds(150, 110, 130, 20);
+            removeFriend2.setBounds(150, 110, 130, 20);
+            getContentPane().add(Requestlbl);
+            getContentPane().add(requestScr);
+            getContentPane().add(btnAccept);
+            getContentPane().add(btnReject);
+            getContentPane().add(Friendslbl);
+            getContentPane().add(friendScr);
+            getContentPane().add(btnView);
+            getContentPane().add(btnRemove);
+            getContentPane().add(btnAdd);
+            getContentPane().add(cancelRequest);
+            getContentPane().add(removeFriend2);
+            this.loadBackgrounds();
         } else {
-            boolean failedToLoad = false;
-            String fn = Info[0];
-            String un = ProgramUser.ViewingUser;
-            String gen = Info[1];
-            String bday = Info[2];
-            String addr = Info[3];
-            fullname.setText(fn);
-            full.setText(fn);
-            user.setText(un);
-            username.setText(un);
-            user.setText(un);
-            gender.setText(gen);
-            birthDate.setText(bday);
-            address.setText(addr);
-            if (path == null) {
-                proPic = new ImageIcon("DefaultProfilePic.png");
-            } else {
-                if (io.checkIfExists(path) == false) {
-                    failedToLoad = true;
-                } else {
-                    try {
-                        proPic = new ImageIcon(path);
-                    } catch (Exception ex) {
-                        failedToLoad = true;
-                    }
-                }
-            }
-            if (failedToLoad) {
-                proPic = new ImageIcon("DefaultProfilePic.png");
-                io.savePath(ProgramUser.ViewingUser, "DefaultProfilePic.png");
-            }
-            pic.setIcon(proPic);
-            pic.setBounds(40, 40, 100, 100);
-            getContentPane().add(pic);
-            if (ProgramUser.CurrentUser.equals(ProgramUser.ViewingUser)) {
-                btnAdd.setVisible(false);
-                cancelRequest.setVisible(false);
-                Requestlbl.setVisible(true);
-                requestScr.setVisible(true);
-                btnEdit.setVisible(true);
-                btnAccept.setVisible(true);
-                btnReject.setVisible(true);
-                btnRemove.setVisible(true);
+            boolean areFriends = false;
+            btnAdd.setVisible(true);
+            btnEdit.setVisible(false);
+            cancelRequest.setVisible(false);
+            removeFriend2.setVisible(false);
+            post.setVisible(false);
+            postArea.setVisible(false);
+            birthDate.setVisible(false);
+            address.setVisible(false);
+            btnPost.setVisible(false);
+            String getGender = "";
+            if (ViewUser.checkIfFriends(this.UserSession.CurrentUser.UserID)) {
                 post.setVisible(true);
                 postArea.setVisible(true);
                 birthDate.setVisible(true);
                 address.setVisible(true);
                 btnPost.setVisible(true);
-                removeFriend2.setVisible(false);
-                mod.removeAllElements();
-                String[] getPosts = io.getPosts(ProgramUser.ViewingUser);
-                if (getPosts != null) {
-                    for (int i = 0; i < getPosts.length; i++) {
-                        mod.addElement(getPosts[i]);
-                    }
-                }
-                friendMod.removeAllElements();
-                String[] getFriends = io.getFriends(ProgramUser.ViewingUser);
-                if (getFriends != null) {
-                    for (int i = 0; i < getFriends.length; i++) {
-                        friendMod.addElement(getFriends[i]);
-                    }
-                }
-                requestMod.removeAllElements();
-                String[] getRequest = io.getRequest(ProgramUser.ViewingUser);
-                if (getRequest != null) {
-                    for (int i = 0; i < getRequest.length; i++) {
-                        requestMod.addElement(getRequest[i]);
-                    }
-                }
-                Requestlbl.setBounds(950, 55, 150, 20);
-                requestScr.setBounds(950, 75, 345, 255);
-                btnAccept.setBounds(990, 330, 140, 20);
-                btnReject.setBounds(1130, 330, 140, 20);
-                Friendslbl.setBounds(950, 360, 150, 20);
-                friendScr.setBounds(950, 380, 350, 270);
-                btnView.setBounds(990, 650, 140, 20);
-                btnRemove.setBounds(1130, 650, 140, 20);
-                btnAdd.setBounds(150, 110, 100, 20);
-                cancelRequest.setBounds(150, 110, 130, 20);
-                removeFriend2.setBounds(150, 110, 130, 20);
-                getContentPane().add(Requestlbl);
-                getContentPane().add(requestScr);
-                getContentPane().add(btnAccept);
-                getContentPane().add(btnReject);
-                getContentPane().add(Friendslbl);
-                getContentPane().add(friendScr);
-                getContentPane().add(btnView);
-                getContentPane().add(btnRemove);
-                getContentPane().add(btnAdd);
-                getContentPane().add(cancelRequest);
-                getContentPane().add(removeFriend2);
-                loadBackgrounds();
-            } else {
-                boolean areFriends = false;
-                btnAdd.setVisible(true);
-                btnEdit.setVisible(false);
+                btnAdd.setVisible(false);
                 cancelRequest.setVisible(false);
-                removeFriend2.setVisible(false);
-                post.setVisible(false);
-                postArea.setVisible(false);
-                birthDate.setVisible(false);
-                address.setVisible(false);
-                btnPost.setVisible(false);
-                mod.removeAllElements();
-                String[] getPosts = io.getPosts(ProgramUser.ViewingUser);
-                if (getPosts != null) {
-                    for (int i = 0; i < getPosts.length; i++) {
-                        mod.addElement(getPosts[i]);
-                    }
-                }
-                friendMod.removeAllElements();
-                String[] getFriends = io.getFriends(ProgramUser.ViewingUser);
-                if (getFriends != null) {
-                    for (int i = 0; i < getFriends.length; i++) {
-                        friendMod.addElement(getFriends[i]);
-                        if (getFriends[i].equalsIgnoreCase(ProgramUser.CurrentUser)) {
-                            areFriends = true;
-                            post.setVisible(true);
-                            postArea.setVisible(true);
-                            birthDate.setVisible(true);
-                            address.setVisible(true);
-                            btnPost.setVisible(true);
-                            btnAdd.setVisible(false);
-                            cancelRequest.setVisible(false);
-                            removeFriend2.setVisible(true);
-                        }
-
-                    }
-                }
-                requestMod.removeAllElements();
-                String[] getRequest = io.getRequest(ProgramUser.ViewingUser);
-                if (getRequest != null) {
-                    for (int i = 0; i < getRequest.length; i++) {
-                        requestMod.addElement(getRequest[i]);
-                        if (getRequest[i].equalsIgnoreCase(ProgramUser.CurrentUser)) {
-                            btnAdd.setVisible(false);
-                            if (areFriends) {
-                                cancelRequest.setVisible(false);
-                            } else {
-                                cancelRequest.setVisible(true);
-                            }
-                        }
-                    }
-                }
-                String getGender = "";
+                removeFriend2.setVisible(true);
+            } else {
                 if (gender.getText().equalsIgnoreCase("Male")) {
                     getGender = "his";
                 } else {
                     getGender = "her";
                 }
-                Requestlbl.setVisible(false);
-                requestScr.setVisible(false);
-                btnAccept.setVisible(false);
-                btnReject.setVisible(false);
-                btnRemove.setVisible(false);
-                Friendslbl.setBounds(950, 55, 150, 20);
-                friendScr.setBounds(950, 75, 350, 575);
-                btnView.setBounds(1060, 650, 140, 20);
-                getContentPane().add(friendScr);
-                getContentPane().add(Friendslbl);
-                getContentPane().add(btnView);
-                loadBackgrounds();
-                if (areFriends == false) {
-                    JOptionPane.showMessageDialog(null, "I'm sorry but this Hunter's profile is classified please request for " + getGender + " Guild card", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
+                if (ViewUser.checkIfHasPendingRequest(this.UserSession.CurrentUser.UserID)) {
+                    btnAdd.setVisible(false);
+                    cancelRequest.setVisible(true);
                 }
             }
+            Requestlbl.setVisible(false);
+            requestScr.setVisible(false);
+            btnAccept.setVisible(false);
+            btnReject.setVisible(false);
+            btnRemove.setVisible(false);
+            Friendslbl.setBounds(950, 55, 150, 20);
+            friendScr.setBounds(950, 75, 350, 575);
+            btnView.setBounds(1060, 650, 140, 20);
+            getContentPane().add(friendScr);
+            getContentPane().add(Friendslbl);
+            getContentPane().add(btnView);
+            this.loadBackgrounds();
+            if (areFriends == false) {
+                JOptionPane.showMessageDialog(null, "I'm sorry but this Hunter's profile is classified please request for " + getGender + " Guild card", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-
     }
 
+    private void setBoardContents(User user) {
+        mod.removeAllElements();
+        if (user.Post != null) {
+            for (String Post : user.Post) {
+                mod.addElement(Post);
+            }
+        }
+        friendMod.removeAllElements();
+        if (user.Friends != null) {
+            for (String Friends : user.Friends) {
+                friendMod.addElement(Friends);
+            }
+        }
+        requestMod.removeAllElements();
+        if (user.Requests != null) {
+            for (String request : user.Requests) {
+                requestMod.addElement(request);
+            }
+        }
+    }
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnPost) {
-
             String getPost = post.getText();
             if (getPost.equals("")) {
                 JOptionPane.showMessageDialog(null, "Posting Failed: Empty Post", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
             } else {
                 SimpleDateFormat fmt = new SimpleDateFormat("MM/dd/YY hh:mm");
                 Calendar cld = Calendar.getInstance();
-                mod.insertElementAt("[" + fmt.format(cld.getTime()) + "] " + ProgramUser.CurrentUser + ": " + getPost, 0);
+                mod.insertElementAt("[" + fmt.format(cld.getTime()) + "] " + UserSession.CurrentUser.UserID + ": " + getPost, 0);
                 String getAllPost = "";
                 for (int i = 0; i < mod.size(); i++) {
                     getAllPost += mod.getElementAt(i) + "\n";
                 }
                 IOFileStream io = new IOFileStream();
-                io.savePost(ProgramUser.ViewingUser, getAllPost);
+                io.savePost(this.user.getText(), getAllPost);
             }
             post.setText("");
 
         } else if (e.getSource() == btnEdit) {
-            new PasswordConfirmation();
-            if (ProgramUser.PasswordConfirmationReply) {
+            PasswordConfirmation passconfirm = new PasswordConfirmation();
+            if (passconfirm.PasswordConfirmationReply) {
                 new EditProfile();
-                loadInfo();
+                this.loadInfo(this.UserSession.CurrentUser);
             }
-            ProgramUser.PasswordConfirmationReply = false;
 
         } else if (e.getSource() == btnLogOut) {
-            ProgramUser.CurrentUser = "";
-            ProgramUser.ViewingUser = "";
+            this.UserSession.resetSession();
             JOptionPane.showMessageDialog(null, "You Log Out Successfully. Thank You For Staying", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
             new LogInWin();
             dispose();
         } else if (e.getSource() == btnSearch) {
             File f = new File("users/" + searchUser.getText());
             if (f.exists() && !searchUser.getText().trim().equals("")) {
-                ProgramUser.ViewingUser = searchUser.getText().substring(0, 1).toUpperCase() + searchUser.getText().substring(1).toLowerCase();
+                User ViewUser = new User(searchUser.getText().substring(0, 1).toUpperCase() + searchUser.getText().substring(1).toLowerCase());
+                this.loadInfo(ViewUser);
                 searchUser.setText("");
-                loadInfo();
             } else if (searchUser.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(null, "Operation Failed: Search Box Is Empty", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -309,8 +251,8 @@ public class ProfileViewer extends JFrame implements ActionListener {
             if (friends.getSelectedIndex() < 0) {
                 JOptionPane.showMessageDialog(null, "Operation Failed: Nothing Is Selected", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
             } else {
-                ProgramUser.ViewingUser = friends.getSelectedValue().toString();
-                loadInfo();
+                User ViewUser = new User(friends.getSelectedValue().toString());
+                this.loadInfo(ViewUser);
             }
         } else if (e.getSource() == btnRemove) {
             if (friends.getSelectedIndex() < 0) {
@@ -318,28 +260,27 @@ public class ProfileViewer extends JFrame implements ActionListener {
             } else {
                 if (JOptionPane.showConfirmDialog(null, "Do You Want To Remove The Selected Person?", "Hunter's Guild", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     IOFileStream io = new IOFileStream();
-                    io.RemoveFriendStatus(friends.getSelectedValue().toString(), ProgramUser.CurrentUser);
+                    io.RemoveFriendStatus(friends.getSelectedValue().toString(), this.UserSession.CurrentUser.UserID);
                     friendMod.remove(friends.getSelectedIndex());
                     String getAllFriends = "";
                     for (int i = 0; i < friendMod.size(); i++) {
                         getAllFriends += friendMod.getElementAt(i) + "\n";
                     }
-                    io.saveFriends(ProgramUser.CurrentUser, getAllFriends);
+                    io.saveFriends(this.UserSession.CurrentUser.UserID, getAllFriends);
                     JOptionPane.showMessageDialog(null, "Removed Successfully", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
-
                 }
             }
         } else if (e.getSource() == btnAdd) {
-            requestMod.addElement(ProgramUser.CurrentUser);
+            requestMod.addElement(this.UserSession.CurrentUser.UserID);
             String getAllRequest = "";
             for (int i = 0; i < requestMod.size(); i++) {
                 getAllRequest += requestMod.getElementAt(i) + "\n";
             }
             IOFileStream io = new IOFileStream();
-            io.saveRequest(ProgramUser.ViewingUser, getAllRequest);
+            io.saveRequest(this.user.getText(), getAllRequest);
             btnAdd.setVisible(false);
             cancelRequest.setVisible(true);
-            JOptionPane.showMessageDialog(null, "Request Sent", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Friend Request sent", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
         } else if (e.getSource() == btnAccept) {
             if (requests.getSelectedIndex() < 0) {
                 JOptionPane.showMessageDialog(null, "Operation Failed: Nothing Is Selected", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
@@ -365,9 +306,9 @@ public class ProfileViewer extends JFrame implements ActionListener {
                         }
                     }
                     IOFileStream io = new IOFileStream();
-                    io.saveRequest(ProgramUser.CurrentUser, getAllRequest);
-                    io.saveFriends(ProgramUser.CurrentUser, getAllFriends);
-                    io.saveAcceptedUsername(getAcceptedUsername, ProgramUser.CurrentUser);
+                    io.saveRequest(this.UserSession.CurrentUser.UserID, getAllRequest);
+                    io.saveFriends(this.UserSession.CurrentUser.UserID, getAllFriends);
+                    io.saveAcceptedUsername(getAcceptedUsername, this.UserSession.CurrentUser.UserID);
                     JOptionPane.showMessageDialog(null, "You Are Now Friends With " + getAcceptedUsername, "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Operation Failed: You Already Friends With " + getAcceptedUsername, "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
@@ -379,7 +320,7 @@ public class ProfileViewer extends JFrame implements ActionListener {
                         }
                     }
                     IOFileStream io = new IOFileStream();
-                    io.saveRequest(ProgramUser.CurrentUser, getAllRequest);
+                    io.saveRequest(this.UserSession.CurrentUser.UserID, getAllRequest);
                 }
 
             }
@@ -396,14 +337,13 @@ public class ProfileViewer extends JFrame implements ActionListener {
                     }
                 }
                 IOFileStream io = new IOFileStream();
-                io.saveRequest(ProgramUser.CurrentUser, getAllRequest);
+                io.saveRequest(this.UserSession.CurrentUser.UserID, getAllRequest);
                 JOptionPane.showMessageDialog(null, "Rejected Successfully", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (e.getSource() == home) {
-            ProgramUser.ViewingUser = ProgramUser.CurrentUser;
-            loadInfo();
+            loadInfo(this.UserSession.CurrentUser);
         } else if (e.getSource() == cancelRequest) {
-            String getUsername = ProgramUser.CurrentUser;
+            String getUsername = this.UserSession.CurrentUser.UserID;
             boolean isFound = false;
             int getIndex = 0;
             for (int i = 0; i < requestMod.size(); i++) {
@@ -424,7 +364,7 @@ public class ProfileViewer extends JFrame implements ActionListener {
                     }
                 }
                 IOFileStream io = new IOFileStream();
-                io.saveRequest(ProgramUser.ViewingUser, getAllRequest);
+                io.saveRequest(this.user.getText(), getAllRequest);
                 JOptionPane.showMessageDialog(null, "Canceled Successfully", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
                 cancelRequest.setVisible(false);
                 btnAdd.setVisible(true);
@@ -435,8 +375,8 @@ public class ProfileViewer extends JFrame implements ActionListener {
             new GlobalChat();
             dispose();
         } else if (e.getSource() == removeFriend2) {
-            if (JOptionPane.showConfirmDialog(null, "Do You Want To Unfiend " + ProgramUser.ViewingUser + "?", "Hunter's Guild", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                String getUsername = ProgramUser.CurrentUser;
+            if (JOptionPane.showConfirmDialog(null, "Do You Want To Unfiend " + this.user.getText() + "?", "Hunter's Guild", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                String getUsername = this.UserSession.CurrentUser.UserID;
                 boolean isFound = false;
                 int getIndex = 0;
                 for (int i = 0; i < friendMod.size(); i++) {
@@ -455,22 +395,25 @@ public class ProfileViewer extends JFrame implements ActionListener {
                         getAllFriends = friendMod.getElementAt(i) + "\n";
                     }
                     IOFileStream io = new IOFileStream();
-                    io.saveFriends(ProgramUser.ViewingUser, getAllFriends);
-                    io.RemoveFriendStatus(ProgramUser.CurrentUser, ProgramUser.ViewingUser);
+                    io.saveFriends(this.user.getText(), getAllFriends);
+                    io.RemoveFriendStatus(this.UserSession.CurrentUser.UserID, this.user.getText());
                     JOptionPane.showMessageDialog(null, "Removed Successfully", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
-                    loadInfo();
+                    this.ReloadPage();
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Operation Failed", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-
             }
         }
 
     }
 
-    void loadBackgrounds() {
+    private void ReloadPage() {
+        User ViewUser = new User(this.user.getText());
+        loadInfo(ViewUser);
+    }
+
+    private void loadBackgrounds() {
         Container con = getContentPane();
         con.add(OptionsHandler);
         con.add(SocialStatusHandler);
@@ -480,7 +423,7 @@ public class ProfileViewer extends JFrame implements ActionListener {
         con.add(back);
     }
 
-    void content() {
+    private void content() {
         Container con = getContentPane();
         con.setLayout(null);
         Font FullnameFont = new Font("Comic Sans MS", Font.PLAIN, 16);

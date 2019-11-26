@@ -1,5 +1,8 @@
+package Objects;
 
-import Objects.ProgramUser;
+
+import Objects.IOFileStream;
+import Objects.UserSession;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,6 +19,7 @@ public class changePass extends JDialog implements ActionListener {
     JPasswordField conf = new JPasswordField();
     JButton change = new JButton("Change");
     JButton ret = new JButton("Return");
+    ImageIcon icon = new ImageIcon("icon.png");
 
     public changePass() {
         this.setModal(true);
@@ -24,7 +28,7 @@ public class changePass extends JDialog implements ActionListener {
         this.setLocation(460, 225);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         content();
-        setIconImage(ProgramUser.icon.getImage());
+        setIconImage(this.icon.getImage());
         setVisible(true);
     }
 

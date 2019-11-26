@@ -1,10 +1,10 @@
-import Objects.ProgramUser;
+package Objects;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 import java.text.*;
-import java.io.*;
 
 public class GlobalChat extends JFrame implements ActionListener{
 	Rectangles rect1 = new Rectangles();
@@ -12,6 +12,7 @@ public class GlobalChat extends JFrame implements ActionListener{
 	ImageIcon vanira = new ImageIcon("vanilla.png");
 	ImageIcon background = new ImageIcon("GlobalChatBack.png");
 	ImageIcon vanillaSpeechBubble = new ImageIcon("VanillaSpeechBubble.png");
+        ImageIcon icon = new ImageIcon("icon.png");
 	JLabel Speech = new JLabel(vanillaSpeechBubble);
 	JLabel globalChatHandler = new JLabel(Handler);
 	JLabel vanilla = new JLabel(vanira);
@@ -30,12 +31,12 @@ public class GlobalChat extends JFrame implements ActionListener{
     	this.setLocation(20, 10);
     	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setResizable(false);
-    	content();
-    	getLog();
-    	setIconImage(ProgramUser.icon.getImage());
+    	this.content();
+    	this.getLog();
+    	setIconImage(this.icon.getImage());
     	setVisible(true);
     }
-    void getLog(){
+    private void getLog(){
     	IOFileStream io = new IOFileStream();
     	String[] getMessages = io.getGlobalChatLog();
     	if(getMessages != null){
@@ -47,14 +48,13 @@ public class GlobalChat extends JFrame implements ActionListener{
     }
     public void actionPerformed(ActionEvent e){
     	if(e.getSource() == ret){
-    		ProgramUser.ViewingUser = ProgramUser.CurrentUser;
-    		new ProfileViewer();
+    		new ProfileViewer(UserSession.CurrentUser);
     		dispose(); 
     	}else if(e.getSource() == send){
     		String getMessage = message.getText();
-    		SimpleDateFormat fmt = new SimpleDateFormat("MM/dd/YY hh:mm");
+    		SimpleDateFormat fmt = new SimpleDateFormat("MM/dd/YY hh:mm:ss");
     		Calendar cld = Calendar.getInstance();
-    		mod.addElement("[" + fmt.format(cld.getTime()) + "]" + ProgramUser.CurrentUser + ": " + getMessage);
+    		mod.addElement("[" + fmt.format(cld.getTime()) + "]" + UserSession.CurrentUser.UserID + ": " + getMessage);
     		chatArea.setSelectedIndex(mod.size() - 1);
     		String getAllMessages = "";
     		for(int i = 0; i < mod.size(); i++){
@@ -65,7 +65,7 @@ public class GlobalChat extends JFrame implements ActionListener{
     		io.saveGlobalChatLog(getAllMessages);
     	}
     }
-    void content(){
+    private void content(){
     	Container con = getContentPane();
     	con.setLayout(null);
     	Font LoglblFont = new Font("Comic Sans MS", Font.BOLD, 16);

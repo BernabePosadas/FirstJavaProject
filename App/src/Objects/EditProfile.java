@@ -1,5 +1,5 @@
+package Objects;
 
-import Objects.ProgramUser;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,7 +8,6 @@ public class EditProfile extends JDialog implements ActionListener {
 
     boolean isOkToSave = true;
     boolean process1 = false;
-    boolean isLeapYear = false;
     String[] days = getDays(31);
     String[] month = {
         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
@@ -33,6 +32,7 @@ public class EditProfile extends JDialog implements ActionListener {
     JButton ret = new JButton("Return");
     JButton changePicture = new JButton("Change Picture");
     ButtonGroup genGrp = new ButtonGroup();
+    ImageIcon icon = new ImageIcon("icon.png");
 
     public EditProfile() {
         this.setModal(true);
@@ -41,89 +41,61 @@ public class EditProfile extends JDialog implements ActionListener {
         this.setLocation(350, 200);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
-        content();
-        getPreviousInfo();
-        setIconImage(ProgramUser.icon.getImage());
+        this.content();
+        this.getPreviousInfo();
+        setIconImage(this.icon.getImage());
         setVisible(true);
     }
 
-    void getPreviousInfo() {
-        IOFileStream io = new IOFileStream();
-        String get = ProgramUser.CurrentUser;
-        String[] Info = io.getInfo(get);
-        String path = io.getImagePath(get);
-        if (Info == null) {
-            JOptionPane.showMessageDialog(null, "Error: getInfo() Returned Null", "Edit Profile", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        } else {
-            boolean failedToLoad = false;
-            String fn = Info[0];
-            String gen = Info[1];
-            String bday = Info[2];
-            String address = Info[3];
-            fullName.setText(fn);
-            if (gen.trim().equalsIgnoreCase("Male")) {
-                gen1.setSelected(true);
-            } else if (gen.trim().equalsIgnoreCase("Female")) {
-                gen2.setSelected(true);
-            }
-            String[] getBDate = bday.split(" ");
-            int day = Integer.parseInt(getBDate[1]);
-            int years = Integer.parseInt(getBDate[2]);
-            if (getBDate[0].equalsIgnoreCase("January")) {
-                mm.setSelectedIndex(0);
-            } else if (getBDate[0].equalsIgnoreCase("February")) {
-                mm.setSelectedIndex(1);
-            } else if (getBDate[0].equalsIgnoreCase("March")) {
-                mm.setSelectedIndex(2);
-            } else if (getBDate[0].equalsIgnoreCase("April")) {
-                mm.setSelectedIndex(3);
-            } else if (getBDate[0].equalsIgnoreCase("May")) {
-                mm.setSelectedIndex(4);
-            } else if (getBDate[0].equalsIgnoreCase("June")) {
-                mm.setSelectedIndex(5);
-            } else if (getBDate[0].equalsIgnoreCase("July")) {
-                mm.setSelectedIndex(6);
-            } else if (getBDate[0].equalsIgnoreCase("August")) {
-                mm.setSelectedIndex(7);
-            } else if (getBDate[0].equalsIgnoreCase("September")) {
-                mm.setSelectedIndex(8);
-            } else if (getBDate[0].equalsIgnoreCase("October")) {
-                mm.setSelectedIndex(9);
-            } else if (getBDate[0].equalsIgnoreCase("November")) {
-                mm.setSelectedIndex(10);
-            } else if (getBDate[0].equalsIgnoreCase("December")) {
-                mm.setSelectedIndex(11);
-            }
-            dd.setSelectedIndex(day - 1);
-            yy.setSelectedIndex(years - 1900);
-            addr.setText(address);
-            if (path == null) {
-                proPic = new ImageIcon("DefaultProfilePic.png");
-            } else {
-                if (io.checkIfExists(path) == false) {
-                    JOptionPane.showMessageDialog(null, "Image Failed To Load Or Moved To Another Location", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
-                    failedToLoad = true;
-                } else {
-                    try {
-                        proPic = new ImageIcon(path);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Image Failed To Load Or Moved To Another Location", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
-                        failedToLoad = true;
-                    }
-                }
-            }
-            if (failedToLoad) {
-                proPic = new ImageIcon("DefaultProfilePic.png");
-            }
-            pic.setIcon(proPic);
-            pic.setBounds(40, 40, 100, 100);
-            getContentPane().add(pic);
+    private void getPreviousInfo() {
+        fullName.setText(UserSession.CurrentUser.FullName);
+        if (UserSession.CurrentUser.Gender.trim().equalsIgnoreCase("Male")) {
+            gen1.setSelected(true);
+        } else if (UserSession.CurrentUser.Gender.trim().equalsIgnoreCase("Female")) {
+            gen2.setSelected(true);
         }
+        this.setBDay(UserSession.CurrentUser.BirthDay.split(" "));
+        addr.setText(UserSession.CurrentUser.Address);
+        proPic = new ImageIcon(UserSession.CurrentUser.ImagePath);
+        pic.setIcon(proPic);
+        pic.setBounds(40, 40, 100, 100);
+        getContentPane().add(pic);
 
     }
 
-    public String[] getYears(int yr) {
+    private void setBDay(String[] BDay) {
+        int day = Integer.parseInt(BDay[1]);
+        int years = Integer.parseInt(BDay[2]);
+        if (BDay[0].equalsIgnoreCase("January")) {
+            mm.setSelectedIndex(0);
+        } else if (BDay[0].equalsIgnoreCase("February")) {
+            mm.setSelectedIndex(1);
+        } else if (BDay[0].equalsIgnoreCase("March")) {
+            mm.setSelectedIndex(2);
+        } else if (BDay[0].equalsIgnoreCase("April")) {
+            mm.setSelectedIndex(3);
+        } else if (BDay[0].equalsIgnoreCase("May")) {
+            mm.setSelectedIndex(4);
+        } else if (BDay[0].equalsIgnoreCase("June")) {
+            mm.setSelectedIndex(5);
+        } else if (BDay[0].equalsIgnoreCase("July")) {
+            mm.setSelectedIndex(6);
+        } else if (BDay[0].equalsIgnoreCase("August")) {
+            mm.setSelectedIndex(7);
+        } else if (BDay[0].equalsIgnoreCase("September")) {
+            mm.setSelectedIndex(8);
+        } else if (BDay[0].equalsIgnoreCase("October")) {
+            mm.setSelectedIndex(9);
+        } else if (BDay[0].equalsIgnoreCase("November")) {
+            mm.setSelectedIndex(10);
+        } else if (BDay[0].equalsIgnoreCase("December")) {
+            mm.setSelectedIndex(11);
+        }
+        dd.setSelectedIndex(day - 1);
+        yy.setSelectedIndex(years - 1900);
+    }
+
+    private String[] getYears(int yr) {
         String[] years = new String[yr];
         for (int i = 0; i < 117; i++) {
             years[i] = 1900 + i + "";
@@ -140,72 +112,59 @@ public class EditProfile extends JDialog implements ActionListener {
         return nichi;
     }
 
+    private void renderFebuary() {
+        int selected = dd.getSelectedIndex();
+        dd.removeAllItems();
+        if (this.isLeapYear()) {
+            for (int i = 1; i <= 29; i++) {
+                dd.addItem(i + "");
+            }
+            if (selected > 28) {
+                dd.setSelectedIndex(0);
+            } else {
+                dd.setSelectedIndex(selected);
+            }
+        } else {
+            for (int i = 1; i <= 28; i++) {
+                dd.addItem(i + "");
+            }
+            if (selected > 27) {
+                dd.setSelectedIndex(0);
+            } else {
+                dd.setSelectedIndex(selected);
+            }
+        }
+    }
+
+    private void renderDateDropDown() {
+        int selected = dd.getSelectedIndex();
+        if (mm.getSelectedItem().toString().equals("January") || mm.getSelectedItem().toString().equals("March") || mm.getSelectedItem().toString().equals("May") || mm.getSelectedItem().toString().equals("July") || mm.getSelectedItem().toString().equals("August") || mm.getSelectedItem().toString().equals("October") || mm.getSelectedItem().toString().equals("December")) {
+            dd.removeAllItems();
+            for (int i = 1; i <= 31; i++) {
+                dd.addItem(i + "");
+            }
+            dd.setSelectedIndex(selected);
+        } else if (mm.getSelectedItem().toString().equals("February")) {
+            this.renderFebuary();
+        } else if (mm.getSelectedItem().toString().equals("April") || mm.getSelectedItem().toString().equals("June") || mm.getSelectedItem().toString().equals("September") || mm.getSelectedItem().toString().equals("November")) {
+            dd.removeAllItems();
+            for (int i = 1; i <= 30; i++) {
+                dd.addItem(i + "");
+            }
+            if (selected > 29) {
+                dd.setSelectedIndex(0);
+            } else {
+                dd.setSelectedIndex(selected);
+            }
+        }
+    }
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mm) {
-            int selected = dd.getSelectedIndex();
-            if (mm.getSelectedItem().toString().equals("January") || mm.getSelectedItem().toString().equals("March") || mm.getSelectedItem().toString().equals("May") || mm.getSelectedItem().toString().equals("July") || mm.getSelectedItem().toString().equals("August") || mm.getSelectedItem().toString().equals("October") || mm.getSelectedItem().toString().equals("December")) {
-                dd.removeAllItems();
-                for (int i = 1; i <= 31; i++) {
-                    dd.addItem(i + "");
-                }
-                dd.setSelectedIndex(selected);
-            } else if (mm.getSelectedItem().toString().equals("February")) {
-                dd.removeAllItems();
-                checkLeapYear();
-                if (isLeapYear) {
-                    for (int i = 1; i <= 29; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 28) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                } else {
-                    for (int i = 1; i <= 28; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 27) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                }
-            } else if (mm.getSelectedItem().toString().equals("April") || mm.getSelectedItem().toString().equals("June") || mm.getSelectedItem().toString().equals("September") || mm.getSelectedItem().toString().equals("November")) {
-                dd.removeAllItems();
-                for (int i = 1; i <= 30; i++) {
-                    dd.addItem(i + "");
-                }
-                if (selected > 29) {
-                    dd.setSelectedIndex(0);
-                } else {
-                    dd.setSelectedIndex(selected);
-                }
-            }
+            renderDateDropDown();
         } else if (e.getSource() == yy) {
-            int selected = dd.getSelectedIndex();
             if (mm.getSelectedItem().toString().equals("February")) {
-                dd.removeAllItems();
-                checkLeapYear();
-                if (isLeapYear) {
-                    for (int i = 1; i <= 29; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 28) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                } else {
-                    for (int i = 1; i <= 28; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 27) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                }
+               this.renderFebuary();
             }
         } else if (e.getSource() == ret) {
             dispose();
@@ -277,7 +236,7 @@ public class EditProfile extends JDialog implements ActionListener {
             IOFileStream io = new IOFileStream();
             boolean checkFile = io.checkIfExists(filePath);
             if (checkFile) {
-                io.savePath(ProgramUser.CurrentUser, filePath);
+                io.savePath(UserSession.CurrentUser.UserID, filePath);
                 JOptionPane.showMessageDialog(null, "Profile Picture Changed Successfully and Saved", "Edit Profile", JOptionPane.INFORMATION_MESSAGE);
                 getPreviousInfo();
             } else {
@@ -286,20 +245,19 @@ public class EditProfile extends JDialog implements ActionListener {
         }
     }
 
-    // wha? why i didn't just return the result?
-    void checkLeapYear() {
+    private boolean isLeapYear() {
         if (Integer.parseInt(yy.getSelectedItem().toString()) % 4 != 0) {
-            isLeapYear = false;
+            return false;
         } else if (Integer.parseInt(yy.getSelectedItem().toString()) % 100 != 0) {
-            isLeapYear = true;
+            return true;
         } else if (Integer.parseInt(yy.getSelectedItem().toString()) % 400 != 0) {
-            isLeapYear = false;
+            return false;
         } else {
-            isLeapYear = true;
+            return true;
         }
     }
 
-    void content() {
+    private void content() {
         Container con = getContentPane();
         con.setLayout(null);
         lblFullName.setBounds(250, 10, 70, 20);

@@ -1,5 +1,10 @@
+package Objects;
 
-import Objects.ProgramUser;
+
+import Objects.Rectangles;
+import Objects.LogInWin;
+import Objects.IOFileStream;
+import Objects.UserSession;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -46,6 +51,7 @@ public class Register extends JFrame implements ActionListener {
     JComboBox yy = new JComboBox(year);
     JButton Reg = new JButton("Register");
     JButton ret = new JButton("Return to Login Page");
+    ImageIcon icon = new ImageIcon("icon.png");
     ButtonGroup gend = new ButtonGroup();
     boolean process1 = false;
 
@@ -56,7 +62,7 @@ public class Register extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         content();
-        setIconImage(ProgramUser.icon.getImage());
+        setIconImage(this.icon.getImage());
         setVisible(true);
     }
 
