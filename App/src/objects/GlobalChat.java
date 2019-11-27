@@ -1,4 +1,4 @@
-package Objects;
+package objects;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,24 +7,22 @@ import java.awt.event.*;
 import java.text.*;
 
 public class GlobalChat extends JFrame implements ActionListener{
-	Rectangles rect1 = new Rectangles();
-	ImageIcon Handler = new ImageIcon("GlobalChatHandler.png");
-	ImageIcon vanira = new ImageIcon("vanilla.png");
-	ImageIcon background = new ImageIcon("GlobalChatBack.png");
-	ImageIcon vanillaSpeechBubble = new ImageIcon("VanillaSpeechBubble.png");
-        ImageIcon icon = new ImageIcon("icon.png");
-	JLabel Speech = new JLabel(vanillaSpeechBubble);
-	JLabel globalChatHandler = new JLabel(Handler);
-	JLabel vanilla = new JLabel(vanira);
-	JLabel back = new JLabel(background);
-	JLabel loglbl = new JLabel("Global Chat Log:");
-	JTextField message = new JTextField();
-	DefaultListModel mod = new DefaultListModel();
-	JList chatArea = new JList(mod);
-	JScrollPane scr = new JScrollPane(chatArea);
-	JButton ret = new JButton("Return To Home");
-	JButton send = new JButton("Send");
-
+	private final ImageIcon Handler = new ImageIcon("GlobalChatHandler.png");
+	private final ImageIcon vanira = new ImageIcon("vanilla.png");
+	private final ImageIcon background = new ImageIcon("GlobalChatBack.png");
+	private final ImageIcon vanillaSpeechBubble = new ImageIcon("VanillaSpeechBubble.png");
+        private final ImageIcon icon = new ImageIcon("icon.png");
+	private final JLabel Speech = new JLabel(vanillaSpeechBubble);
+	private final JLabel globalChatHandler = new JLabel(Handler);
+	private final JLabel vanilla = new JLabel(vanira);
+	private final JLabel back = new JLabel(background);
+	private final JLabel loglbl = new JLabel("Global Chat Log:");
+	private final JTextField message = new JTextField();
+	private final DefaultListModel mod = new DefaultListModel();
+	private final JList chatArea = new JList(mod);
+	private final JScrollPane scr = new JScrollPane(chatArea);
+	private final JButton ret = new JButton("Return To Home");
+	private final JButton send = new JButton("Send");
     public GlobalChat() {
     	this.setTitle("Hunter's Guild: Global Chat");
     	this.setSize(1330, 715);
@@ -40,12 +38,13 @@ public class GlobalChat extends JFrame implements ActionListener{
     	IOFileStream io = new IOFileStream();
     	String[] getMessages = io.getGlobalChatLog();
     	if(getMessages != null){
-    		for(int i = 0; i < getMessages.length; i++){
-    			mod.addElement(getMessages[i]);
-    		}
+                for (String message1 : getMessages) {
+                    mod.addElement(message1);
+                }
     		chatArea.setSelectedIndex(mod.size() - 1);
     	}
     }
+    @Override
     public void actionPerformed(ActionEvent e){
     	if(e.getSource() == ret){
     		new ProfileViewer(UserSession.CurrentUser);

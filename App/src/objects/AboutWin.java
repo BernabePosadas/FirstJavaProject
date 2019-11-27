@@ -1,33 +1,33 @@
-package Objects;
+package objects;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AboutWin extends JDialog{
-	ImageIcon background = new ImageIcon("AboutWinBack.png");
-        ImageIcon icon = new ImageIcon("icon.png");
-	ImageIcon HuntersGuildBanner = new ImageIcon("HuntersGuildBannerSmall.png");
-	ImageIcon aboutMascot = new ImageIcon("aboutMascot.png");
-	ImageIcon nekopara = new ImageIcon("nekopara.png");
-	ImageIcon capcom = new ImageIcon("CapcomLogo.png");
-	JLabel back = new JLabel(background);
-	JLabel nekoparaIcon = new JLabel(nekopara);
-	JLabel capcomLogo = new JLabel(capcom);
-	JLabel girl = new JLabel(aboutMascot);
-	JLabel banner = new JLabel(HuntersGuildBanner);
-	JLabel aboutlbl = new JLabel("About");
-	JLabel message1 = new JLabel("The Hunters guild is a great place to stay when you are");
-	JLabel message2 = new JLabel("searching for friends. Its place where you can meet up");
-	JLabel message3 = new JLabel("with other hunters who happen to be on the same both");
-	JLabel message4 = new JLabel("as you so why not join the Guild and start your adventure");
-	JLabel message5 = new JLabel("with your newly appointed comrades in arms!!");
-	JLabel message6 = new JLabel("We dont own all images, copyright goes to their respective owners:");
-	JLabel message7 = new JLabel("NEKOWORKS AND CAPCOM");
-	JLabel message8 = new JLabel("Characters belong to: Nekoworks");
-	JLabel message9 = new JLabel("Background and icons: CAPCOM");
-	JLabel message10 = new JLabel("Created by:");
-	JLabel message11 = new JLabel("Bernabe Posadas Jr.");
-	JLabel message12 = new JLabel("Johnivan De Mesa");
+	private final ImageIcon background = new ImageIcon("AboutWinBack.png");
+        private final ImageIcon icon = new ImageIcon("icon.png");
+	private final ImageIcon HuntersGuildBanner = new ImageIcon("HuntersGuildBannerSmall.png");
+	private final ImageIcon aboutMascot = new ImageIcon("aboutMascot.png");
+	private final ImageIcon nekopara = new ImageIcon("nekopara.png");
+	private final ImageIcon capcom = new ImageIcon("CapcomLogo.png");
+	private final JLabel back = new JLabel(background);
+	private final JLabel nekoparaIcon = new JLabel(nekopara);
+	private final JLabel capcomLogo = new JLabel(capcom);
+	private final JLabel girl = new JLabel(aboutMascot);
+	private final JLabel banner = new JLabel(HuntersGuildBanner);
+	private final JLabel aboutlbl = new JLabel("About");
+	private final JLabel message1 = new JLabel("The Hunters guild is a great place to stay when you are");
+	private final JLabel message2 = new JLabel("searching for friends. Its place where you can meet up");
+	private final JLabel message3 = new JLabel("with other hunters who happen to be on the same both");
+	private final JLabel message4 = new JLabel("as you so why not join the Guild and start your adventure");
+	private final JLabel message5 = new JLabel("with your newly appointed comrades in arms!!");
+	private final JLabel message6 = new JLabel("We dont own all images, copyright goes to their respective owners:");
+	private final JLabel message7 = new JLabel("NEKOWORKS AND CAPCOM");
+	private final JLabel message8 = new JLabel("Characters belong to: Nekoworks");
+	private final JLabel message9 = new JLabel("Background and icons: CAPCOM");
+	private final JLabel message10 = new JLabel("Created by:");
+	private final JLabel message11 = new JLabel("Bernabe Posadas Jr.");
+	private final JLabel message12 = new JLabel("Johnivan De Mesa");
 
     public AboutWin(){
     	setModal(true);

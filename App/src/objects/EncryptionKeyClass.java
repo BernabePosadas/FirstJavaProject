@@ -1,14 +1,13 @@
-package Objects;
+package objects;
 
-import ConcreteImplementation.MD5ChecksumProvider;
-import Interface.IHashChecksumProvider;
+import concrete_implementation.MD5ChecksumProvider;
+import interfaces.IHashChecksumProvider;
 
 public class EncryptionKeyClass {
 
     private final byte[] Key;
     private final byte[] IV;
     private final IHashChecksumProvider Hasher;
-
     public EncryptionKeyClass(String Key, String Iv) {
         this.Key = Key.getBytes();
         this.IV = Iv.getBytes();

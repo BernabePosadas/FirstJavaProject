@@ -1,7 +1,7 @@
 
-package ConcreteImplementation;
+package abstract_class;
 
-import Interface.IHashChecksumProvider;
+import interfaces.IHashChecksumProvider;
 import java.security.MessageDigest;
 import java.util.Base64;
 public abstract class HashLogicProvider implements IHashChecksumProvider{

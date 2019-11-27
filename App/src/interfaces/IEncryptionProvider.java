@@ -1,4 +1,4 @@
-package Interface;
+package interfaces;
 
 public interface IEncryptionProvider {
      public byte[] encrypt(byte[] data);

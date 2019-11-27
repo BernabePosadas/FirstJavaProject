@@ -1,5 +1,6 @@
-package ConcreteImplementation;
+package concrete_implementation;
 
+import abstract_class.HashLogicProvider;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

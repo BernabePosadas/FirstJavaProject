@@ -1,18 +1,18 @@
-package Objects;
+package objects;
 
-import ConcreteImplementation.AESEncryptionProvider;
+import concrete_implementation.AESEncryptionProvider;
 import java.awt.HeadlessException;
-import ConcreteImplementation.SHA256ChecksumProvider;
-import Interface.IEncryptionProvider;
+import concrete_implementation.SHA256ChecksumProvider;
+import interfaces.IEncryptionProvider;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
 public class IOFileStream {
 
-    LinkedList<String> stk = new LinkedList();
-    IEncryptionProvider encipher;
-    SHA256ChecksumProvider sha1;
+    private final LinkedList<String> stk = new LinkedList();
+    private final IEncryptionProvider encipher;
+    private final SHA256ChecksumProvider sha1;
 
     public IOFileStream() {
         EncryptionKeyClass EncryptionKey = new EncryptionKeyClass("Hunter's Guild", "Java Project");
@@ -150,9 +150,7 @@ public class IOFileStream {
 
     public boolean checkPass(String pw) {
         String data = decrypt(new File("users/" + UserSession.CurrentUser.UserID + "/pass.txt"));
-        Scanner in = new Scanner(data);
-        String pass = in.nextLine();
-        return pass.equals(pw);
+        return this.sha1.checkIfMatch(pw.getBytes(), data);
     }
 
     public boolean changePassword(String pw) {

@@ -1,4 +1,4 @@
-package Objects;
+package objects;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,12 +7,12 @@ import java.io.*;
 
 public class Register extends JFrame implements ActionListener {
 
-    private final String[] days = getDays(31);
+    private final DateBuilder date_builder = new DateBuilder();
+    private final String[] days = date_builder.getDays(31);
     private final String[] month = {
         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     };
-    private final Rectangles rect1 = new Rectangles();
-    private final String[] year = getYears(117);
+    private final String[] year = date_builder.getYears(117);
     private final ImageIcon background = new ImageIcon("RegisterBack.png");
     private final ImageIcon chokora = new ImageIcon("chocola.png");
     private final ImageIcon Speech = new ImageIcon("ChocolaSpeechBubble.png");
@@ -58,21 +58,67 @@ public class Register extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public String[] getYears(int yr) {
-        String[] years = new String[yr];
-        for (int i = 0; i < 117; i++) {
-            years[i] = 1900 + i + "";
-
+    public void renderMonths() {
+        int selected = dd.getSelectedIndex();
+        dd.removeAllItems();
+        switch (mm.getSelectedItem().toString()) {
+            case "January":
+            case "March":
+            case "May":
+            case "July":
+            case "August":
+            case "October":
+            case "December":
+                for (int i = 1; i <= 31; i++) {
+                    dd.addItem(i + "");
+                }
+                dd.setSelectedIndex(selected);
+                break;
+            case "February":
+                this.renderFebruary();
+                break;
+            case "April":
+            case "June":
+            case "September":
+            case "November":
+                for (int i = 1; i <= 30; i++) {
+                    dd.addItem(i + "");
+                }
+                if (selected > 29) {
+                    dd.setSelectedIndex(0);
+                } else {
+                    dd.setSelectedIndex(selected);
+                }
+                break;
+            default:
+                break;
         }
-        return years;
     }
 
-    public String[] getDays(int day) {
-        String[] nichi = new String[day];
-        for (int i = 0; i < day; i++) {
-            nichi[i] = 1 + i + "";
+    public void renderFebruary() {
+        int selected = dd.getSelectedIndex();
+        if (mm.getSelectedItem().toString().equals("February")) {
+            dd.removeAllItems();
+            if (isLeapYear()) {
+                for (int i = 1; i <= 29; i++) {
+                    dd.addItem(i + "");
+                }
+                if (selected > 28) {
+                    dd.setSelectedIndex(0);
+                } else {
+                    dd.setSelectedIndex(selected);
+                }
+            } else {
+                for (int i = 1; i <= 28; i++) {
+                    dd.addItem(i + "");
+                }
+                if (selected > 27) {
+                    dd.setSelectedIndex(0);
+                } else {
+                    dd.setSelectedIndex(selected);
+                }
+            }
         }
-        return nichi;
     }
 
     @Override
@@ -117,97 +163,25 @@ public class Register extends JFrame implements ActionListener {
             new LogInWin();
             this.dispose();
         } else if (e.getSource() == mm) {
-            int selected = dd.getSelectedIndex();
-            dd.removeAllItems();
-            switch (mm.getSelectedItem().toString()) {
-                case "January":
-                case "March":
-                case "May":
-                case "July":
-                case "August":
-                case "October":
-                case "December":
-                    for (int i = 1; i <= 31; i++) {
-                        dd.addItem(i + "");
-                    }
-                    dd.setSelectedIndex(selected);
-                    break;
-                case "February":
-                    if (this.isLeapYear()) {
-                        for (int i = 1; i <= 29; i++) {
-                            dd.addItem(i + "");
-                        }
-                        if (selected > 28) {
-                            dd.setSelectedIndex(0);
-                        } else {
-                            dd.setSelectedIndex(selected);
-                        }
-                    } else {
-                        for (int i = 1; i <= 28; i++) {
-                            dd.addItem(i + "");
-                        }
-                        if (selected > 27) {
-                            dd.setSelectedIndex(0);
-                        } else {
-                            dd.setSelectedIndex(selected);
-                        }
-                    }
-                    break;
-                case "April":
-                case "June":
-                case "September":
-                case "November":
-                    for (int i = 1; i <= 30; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 29) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            this.renderMonths();
         } else if (e.getSource() == yy) {
-            int selected = dd.getSelectedIndex();
-            if (mm.getSelectedItem().toString().equals("February")) {
-                dd.removeAllItems();
-                if (isLeapYear()) {
-                    for (int i = 1; i <= 29; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 28) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                } else {
-                    for (int i = 1; i <= 28; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 27) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                }
-            }
+
         }
     }
-    private boolean validatePassword(){
-        if(passw.getText().equals(conf.getText())){
-            if(passw.getText().length() < 6){
+
+    private boolean validatePassword() {
+        if (passw.getText().equals(conf.getText())) {
+            if (passw.getText().length() < 6) {
                 JOptionPane.showMessageDialog(null, "Password cannot be less than 6 characters", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             return true;
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Password Does not match with confirmation textbox", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
+
     private boolean isLeapYear() {
         if (Integer.parseInt(yy.getSelectedItem().toString()) % 4 != 0) {
             return false;

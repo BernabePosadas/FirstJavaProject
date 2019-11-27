@@ -1,18 +1,16 @@
-package Objects;
+package objects;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class EditProfile extends JDialog implements ActionListener {
-
+    private final DateBuilder date_builder = new DateBuilder();
     boolean isOkToSave = true;
     boolean process1 = false;
-    String[] days = getDays(31);
     String[] month = {
         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     };
-    String[] year = getYears(117);
     ImageIcon proPic = new ImageIcon();
     JLabel pic = new JLabel(proPic);
     JLabel lblFullName = new JLabel("FullName:");
@@ -20,9 +18,9 @@ public class EditProfile extends JDialog implements ActionListener {
     JLabel lblBDate = new JLabel("Birth Date:");
     JLabel lblAdd = new JLabel("Address:");
     JLabel lblPass = new JLabel("Password: ");
-    JComboBox dd = new JComboBox(days);
+    JComboBox dd = new JComboBox(date_builder.getDays(31));
     JComboBox mm = new JComboBox(month);
-    JComboBox yy = new JComboBox(year);
+    JComboBox yy = new JComboBox(date_builder.getYears(117));
     JTextField fullName = new JTextField();
     JTextField addr = new JTextField();
     JRadioButton gen1 = new JRadioButton("Male");
@@ -94,24 +92,6 @@ public class EditProfile extends JDialog implements ActionListener {
         dd.setSelectedIndex(day - 1);
         yy.setSelectedIndex(years - 1900);
     }
-
-    private String[] getYears(int yr) {
-        String[] years = new String[yr];
-        for (int i = 0; i < 117; i++) {
-            years[i] = 1900 + i + "";
-
-        }
-        return years;
-    }
-
-    public String[] getDays(int day) {
-        String[] nichi = new String[day];
-        for (int i = 0; i < day; i++) {
-            nichi[i] = 1 + i + "";
-        }
-        return nichi;
-    }
-
     private void renderFebuary() {
         int selected = dd.getSelectedIndex();
         dd.removeAllItems();
@@ -138,24 +118,36 @@ public class EditProfile extends JDialog implements ActionListener {
 
     private void renderDateDropDown() {
         int selected = dd.getSelectedIndex();
-        if (mm.getSelectedItem().toString().equals("January") || mm.getSelectedItem().toString().equals("March") || mm.getSelectedItem().toString().equals("May") || mm.getSelectedItem().toString().equals("July") || mm.getSelectedItem().toString().equals("August") || mm.getSelectedItem().toString().equals("October") || mm.getSelectedItem().toString().equals("December")) {
-            dd.removeAllItems();
-            for (int i = 1; i <= 31; i++) {
-                dd.addItem(i + "");
-            }
-            dd.setSelectedIndex(selected);
-        } else if (mm.getSelectedItem().toString().equals("February")) {
-            this.renderFebuary();
-        } else if (mm.getSelectedItem().toString().equals("April") || mm.getSelectedItem().toString().equals("June") || mm.getSelectedItem().toString().equals("September") || mm.getSelectedItem().toString().equals("November")) {
-            dd.removeAllItems();
-            for (int i = 1; i <= 30; i++) {
-                dd.addItem(i + "");
-            }
-            if (selected > 29) {
-                dd.setSelectedIndex(0);
-            } else {
-                dd.setSelectedIndex(selected);
-            }
+        switch (mm.getSelectedItem().toString()) {
+            case "January":
+            case "March":
+            case "May":
+            case "July":
+            case "August":
+            case "October":
+            case "December":
+                dd.removeAllItems();
+                for (int i = 1; i <= 31; i++) {
+                    dd.addItem(i + "");
+                }   dd.setSelectedIndex(selected);
+                break;
+            case "February":
+                this.renderFebuary();
+                break;
+            case "April":
+            case "June":
+            case "September":
+            case "November":
+                dd.removeAllItems();
+                for (int i = 1; i <= 30; i++) {
+                    dd.addItem(i + "");
+                }   if (selected > 29) {
+                    dd.setSelectedIndex(0);
+                } else {
+                    dd.setSelectedIndex(selected);
+                }   break;
+            default:
+                break;
         }
     }
     @Override

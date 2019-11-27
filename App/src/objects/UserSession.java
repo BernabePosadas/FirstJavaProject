@@ -1,4 +1,4 @@
-package Objects;
+package objects;
 
 public class UserSession {
     public static User CurrentUser = new User("");

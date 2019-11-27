@@ -1,7 +1,7 @@
-package ConcreteImplementation;
+package concrete_implementation;
 
-import Interface.IEncryptionProvider;
-import Objects.EncryptionKeyClass;
+import interfaces.IEncryptionProvider;
+import objects.EncryptionKeyClass;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;

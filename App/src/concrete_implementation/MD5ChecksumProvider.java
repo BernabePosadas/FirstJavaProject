@@ -1,4 +1,5 @@
-package ConcreteImplementation;
+package concrete_implementation;
+import abstract_class.HashLogicProvider;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 public class MD5ChecksumProvider extends HashLogicProvider{

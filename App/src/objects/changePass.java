@@ -1,8 +1,6 @@
-package Objects;
+package objects;
 
 
-import Objects.IOFileStream;
-import Objects.UserSession;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,11 +25,12 @@ public class changePass extends JDialog implements ActionListener {
         this.setSize(325, 250);
         this.setLocation(460, 225);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        content();
+        this.content();
         setIconImage(this.icon.getImage());
         setVisible(true);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ret) {
             dispose();
@@ -81,7 +80,7 @@ public class changePass extends JDialog implements ActionListener {
 
     }
 
-    void content() {
+    private void content() {
         Container con = getContentPane();
         con.setLayout(null);
         lblPrePass.setBounds(35, 10, 150, 20);

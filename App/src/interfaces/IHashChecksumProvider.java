@@ -1,5 +1,5 @@
 
-package Interface;
+package interfaces;
 
 public interface IHashChecksumProvider {
     public boolean checkIfMatch(byte[] data, String HashCode);
