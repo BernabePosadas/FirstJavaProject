@@ -165,7 +165,7 @@ public class Register extends JFrame implements ActionListener {
         } else if (e.getSource() == mm) {
             this.renderMonths();
         } else if (e.getSource() == yy) {
-
+            this.renderFebruary();
         }
     }
 

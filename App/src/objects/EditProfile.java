@@ -212,7 +212,7 @@ public class EditProfile extends JDialog implements ActionListener {
                 }
             }
         } else if (e.getSource() == changePass) {
-            new changePass();
+            new ChangePass();
         } else if (e.getSource() == changePicture) {
             boolean done = false;
             String filePath = "";

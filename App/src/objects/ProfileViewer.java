@@ -97,7 +97,50 @@ public class ProfileViewer extends JFrame implements ActionListener {
         getContentPane().add(pic);
         this.setBoardContents(ViewUser);
         if (UserSession.CurrentUser.UserID.equals(ViewUser.UserID)) {
-            btnAdd.setVisible(false);
+            this.prepareComponentCurrentUser();
+        } else {
+            this.prepareComponentViewingUser();
+             String getGender = "";
+             boolean areFriends = ViewUser.checkIfFriends(this.UserSession.CurrentUser.UserID);
+            if (areFriends) {
+                post.setVisible(true);
+                postArea.setVisible(true);
+                birthDate.setVisible(true);
+                address.setVisible(true);
+                btnPost.setVisible(true);
+                btnAdd.setVisible(false);
+                cancelRequest.setVisible(false);
+                removeFriend2.setVisible(true);
+            } else {
+                if (gender.getText().equalsIgnoreCase("Male")) {
+                    getGender = "his";
+                } else {
+                    getGender = "her";
+                }
+                if (ViewUser.checkIfHasPendingRequest(this.UserSession.CurrentUser.UserID)) {
+                    btnAdd.setVisible(false);
+                    cancelRequest.setVisible(true);
+                }
+            }
+            Requestlbl.setVisible(false);
+            requestScr.setVisible(false);
+            btnAccept.setVisible(false);
+            btnReject.setVisible(false);
+            btnRemove.setVisible(false);
+            Friendslbl.setBounds(950, 55, 150, 20);
+            friendScr.setBounds(950, 75, 350, 575);
+            btnView.setBounds(1060, 650, 140, 20);
+            getContentPane().add(friendScr);
+            getContentPane().add(Friendslbl);
+            getContentPane().add(btnView);
+            if (!areFriends) {
+                JOptionPane.showMessageDialog(null, "I'm sorry but this Hunter's profile is classified please request for " + getGender + " Guild card", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        this.loadBackgrounds();
+    }
+    private void prepareComponentCurrentUser(){
+        btnAdd.setVisible(false);
             cancelRequest.setVisible(false);
             Requestlbl.setVisible(true);
             requestScr.setVisible(true);
@@ -134,9 +177,8 @@ public class ProfileViewer extends JFrame implements ActionListener {
             getContentPane().add(btnAdd);
             getContentPane().add(cancelRequest);
             getContentPane().add(removeFriend2);
-            this.loadBackgrounds();
-        } else {
-            boolean areFriends = false;
+    }
+    private void prepareComponentViewingUser(){
             btnAdd.setVisible(true);
             btnEdit.setVisible(false);
             cancelRequest.setVisible(false);
@@ -146,45 +188,7 @@ public class ProfileViewer extends JFrame implements ActionListener {
             birthDate.setVisible(false);
             address.setVisible(false);
             btnPost.setVisible(false);
-            String getGender = "";
-            if (ViewUser.checkIfFriends(this.UserSession.CurrentUser.UserID)) {
-                post.setVisible(true);
-                postArea.setVisible(true);
-                birthDate.setVisible(true);
-                address.setVisible(true);
-                btnPost.setVisible(true);
-                btnAdd.setVisible(false);
-                cancelRequest.setVisible(false);
-                removeFriend2.setVisible(true);
-            } else {
-                if (gender.getText().equalsIgnoreCase("Male")) {
-                    getGender = "his";
-                } else {
-                    getGender = "her";
-                }
-                if (ViewUser.checkIfHasPendingRequest(this.UserSession.CurrentUser.UserID)) {
-                    btnAdd.setVisible(false);
-                    cancelRequest.setVisible(true);
-                }
-            }
-            Requestlbl.setVisible(false);
-            requestScr.setVisible(false);
-            btnAccept.setVisible(false);
-            btnReject.setVisible(false);
-            btnRemove.setVisible(false);
-            Friendslbl.setBounds(950, 55, 150, 20);
-            friendScr.setBounds(950, 75, 350, 575);
-            btnView.setBounds(1060, 650, 140, 20);
-            getContentPane().add(friendScr);
-            getContentPane().add(Friendslbl);
-            getContentPane().add(btnView);
-            this.loadBackgrounds();
-            if (areFriends == false) {
-                JOptionPane.showMessageDialog(null, "I'm sorry but this Hunter's profile is classified please request for " + getGender + " Guild card", "Hunter's Guild", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
     }
-
     private void setBoardContents(User user) {
         mod.removeAllElements();
         if (user.Post != null) {

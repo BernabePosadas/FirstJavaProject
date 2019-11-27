@@ -13,7 +13,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESEncryptionProvider implements IEncryptionProvider {
-    EncryptionKeyClass key;
+    private EncryptionKeyClass key;
     public AESEncryptionProvider(EncryptionKeyClass key){
         this.key = key;
     }

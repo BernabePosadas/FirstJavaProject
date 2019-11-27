@@ -5,21 +5,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class changePass extends JDialog implements ActionListener {
+public class ChangePass extends JDialog implements ActionListener {
 
-    boolean isOkToChange = true;
-    boolean process1 = false;
-    JLabel lblPrePass = new JLabel("Previous Password:");
-    JLabel lblNew = new JLabel("New Password (6 Characters min):");
-    JLabel lblConf = new JLabel("Confirm Password:");
-    JPasswordField pre = new JPasswordField();
-    JPasswordField newPass = new JPasswordField();
-    JPasswordField conf = new JPasswordField();
-    JButton change = new JButton("Change");
-    JButton ret = new JButton("Return");
-    ImageIcon icon = new ImageIcon("icon.png");
+    private boolean isOkToChange = true;
+    private boolean process1 = false;
+    private final JLabel lblPrePass = new JLabel("Previous Password:");
+    private final JLabel lblNew = new JLabel("New Password (6 Characters min):");
+    private final JLabel lblConf = new JLabel("Confirm Password:");
+    private final JPasswordField pre = new JPasswordField();
+    private final JPasswordField newPass = new JPasswordField();
+    private final JPasswordField conf = new JPasswordField();
+    private final JButton change = new JButton("Change");
+    private final JButton ret = new JButton("Return");
+    private final ImageIcon icon = new ImageIcon("icon.png");
 
-    public changePass() {
+    public ChangePass() {
         this.setModal(true);
         this.setTitle("Change Password");
         this.setSize(325, 250);
@@ -48,7 +48,7 @@ public class changePass extends JDialog implements ActionListener {
                 newPass.setText("");
                 conf.setText("");
                 isOkToChange = false;
-            } else if (newPass.getText().equals(conf.getText()) == false) {
+            } else if (!newPass.getText().equals(conf.getText())) {
                 JOptionPane.showMessageDialog(null, "Password Did Not Match At Confirm Password. Please Re-Enter Your Password", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
                 pre.setText("");
                 newPass.setText("");
