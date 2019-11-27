@@ -5,14 +5,15 @@
 Our very first programming project during my college days now pushed to github. Part of requirements for COPRO(Computer Programming) 2. 
 
 ## Stack 
-- Java 8?(i forgot) SDK 
+  - Java 8?(i forgot) SDK 
 
 ## Third Party Libraries
-- none 
+  - none 
 
 ## Encryption used for data security
-- AES CBC 128bit. 
+  - AES CBC 128bit
+  - SHA256(Password Hashing no salt yet)
 
-## Created By: 
-- Me 
-- Johnivan De Mesa
+## Created By
+  - Me 
+  - Johnivan De Mesa
