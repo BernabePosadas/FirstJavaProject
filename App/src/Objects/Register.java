@@ -1,10 +1,5 @@
 package Objects;
 
-
-import Objects.Rectangles;
-import Objects.LogInWin;
-import Objects.IOFileStream;
-import Objects.UserSession;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,48 +7,45 @@ import java.io.*;
 
 public class Register extends JFrame implements ActionListener {
 
-    boolean register = true;
-    boolean isLeapYear = false;
-    String[] days = getDays(31);
-    String[] month = {
+    private final String[] days = getDays(31);
+    private final String[] month = {
         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     };
-    Rectangles rect1 = new Rectangles();
-    String[] year = getYears(117);
-    ImageIcon background = new ImageIcon("RegisterBack.png");
-    ImageIcon chokora = new ImageIcon("chocola.png");
-    ImageIcon Speech = new ImageIcon("ChocolaSpeechBubble.png");
-    ImageIcon regHandler = new ImageIcon("RegisterFormHandler.png");
-    ImageIcon seal = new ImageIcon("Seal.png");
-    JLabel RegFormBanner = new JLabel("Registration Form");
-    JLabel RegSeal = new JLabel(seal);
-    JLabel Handler = new JLabel(regHandler);
-    JLabel back = new JLabel(background);
-    JLabel chocola = new JLabel(chokora);
-    JLabel SpeechBubble = new JLabel(Speech);
-    JLabel name = new JLabel("Your Full Name:");
-    JLabel username = new JLabel("Username:");
-    JLabel pass = new JLabel("Password: (6 Characters Min)");
-    JLabel confirm = new JLabel("Confirm Password");
-    JLabel gen = new JLabel("Gender:");
-    JLabel birth = new JLabel("Birthdate:");
-    JLabel add = new JLabel("Address");
-    JTextField nam = new JTextField();
-    JTextField usern = new JTextField();
-    JTextArea bachou = new JTextArea();
-    JScrollPane scr = new JScrollPane(bachou);
-    JPasswordField passw = new JPasswordField();
-    JPasswordField conf = new JPasswordField();
-    JRadioButton gen1 = new JRadioButton("Male");
-    JRadioButton gen2 = new JRadioButton("Female");
-    JComboBox dd = new JComboBox(days);
-    JComboBox mm = new JComboBox(month);
-    JComboBox yy = new JComboBox(year);
-    JButton Reg = new JButton("Register");
-    JButton ret = new JButton("Return to Login Page");
-    ImageIcon icon = new ImageIcon("icon.png");
-    ButtonGroup gend = new ButtonGroup();
-    boolean process1 = false;
+    private final Rectangles rect1 = new Rectangles();
+    private final String[] year = getYears(117);
+    private final ImageIcon background = new ImageIcon("RegisterBack.png");
+    private final ImageIcon chokora = new ImageIcon("chocola.png");
+    private final ImageIcon Speech = new ImageIcon("ChocolaSpeechBubble.png");
+    private final ImageIcon regHandler = new ImageIcon("RegisterFormHandler.png");
+    private final ImageIcon seal = new ImageIcon("Seal.png");
+    private final JLabel RegFormBanner = new JLabel("Registration Form");
+    private final JLabel RegSeal = new JLabel(seal);
+    private final JLabel Handler = new JLabel(regHandler);
+    private final JLabel back = new JLabel(background);
+    private final JLabel chocola = new JLabel(chokora);
+    private final JLabel SpeechBubble = new JLabel(Speech);
+    private final JLabel name = new JLabel("Your Full Name:");
+    private final JLabel username = new JLabel("Username:");
+    private final JLabel pass = new JLabel("Password: (6 Characters Min)");
+    private final JLabel confirm = new JLabel("Confirm Password");
+    private final JLabel gen = new JLabel("Gender:");
+    private final JLabel birth = new JLabel("Birthdate:");
+    private final JLabel add = new JLabel("Address");
+    private final JTextField nam = new JTextField();
+    private final JTextField usern = new JTextField();
+    private final JTextArea bachou = new JTextArea();
+    private final JScrollPane scr = new JScrollPane(bachou);
+    private final JPasswordField passw = new JPasswordField();
+    private final JPasswordField conf = new JPasswordField();
+    private final JRadioButton gen1 = new JRadioButton("Male");
+    private final JRadioButton gen2 = new JRadioButton("Female");
+    private final JComboBox dd = new JComboBox(days);
+    private final JComboBox mm = new JComboBox(month);
+    private final JComboBox yy = new JComboBox(year);
+    private final JButton Reg = new JButton("Register");
+    private final JButton ret = new JButton("Return to Login Page");
+    private final ImageIcon icon = new ImageIcon("icon.png");
+    private final ButtonGroup gend = new ButtonGroup();
 
     public Register() {
         this.setTitle("Hunter's Guild: Registration Office");
@@ -61,7 +53,7 @@ public class Register extends JFrame implements ActionListener {
         this.setLocation(150, 20);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        content();
+        this.content();
         setIconImage(this.icon.getImage());
         setVisible(true);
     }
@@ -83,80 +75,42 @@ public class Register extends JFrame implements ActionListener {
         return nichi;
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == Reg) {
-            String fn = nam.getText();
-            String[] fnCheck = fn.split(" ");
-            File f = new File("users/" + usern.getText());
-            if (nam.getText().trim().equals("")) {
-                JOptionPane.showMessageDialog(null, "Full Name Not Set. Please Enter Your Name", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                register = false;
-            } else if (usern.getText().trim().equals("")) {
-                JOptionPane.showMessageDialog(null, "Username Not Set. Please Enter Your Username", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                register = false;
-            } else if (f.exists()) {
-                JOptionPane.showMessageDialog(null, "Username Is Already Taken. Please Enter A New Username", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                usern.setText("");
-                register = false;
-            } else if (passw.getText().trim().equals("")) {
-                JOptionPane.showMessageDialog(null, "Password Not Set. Please Enter Your Password", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                passw.setText("");
-                conf.setText("");
-                register = false;
-            } else if (passw.getText().length() < 6) {
-                JOptionPane.showMessageDialog(null, "Password is Too Short. Please Enter A Password At Least 6 Characters", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                passw.setText("");
-                conf.setText("");
-                register = false;
-            } else if (passw.getText().equals(conf.getText()) == false) {
-                JOptionPane.showMessageDialog(null, "Password Did Not Match At Confirm Password, Please Re-Enter Your Password", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                passw.setText("");
-                conf.setText("");
-                register = false;
-            } else if (!gen1.isSelected() && !gen2.isSelected()) {
-                JOptionPane.showMessageDialog(null, "Gender Not Se. Please Specify Your Gender", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
-                register = false;
-            } else if (bachou.getText().trim().equals("")) {
-                if (JOptionPane.showConfirmDialog(null, "Address Not Set. Leave it unset?", "Hunter's Guild Registration Office", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    bachou.setText("(Not Set)");
-                    register = true;
-                    process1 = true;
-                } else {
-                    register = false;
-                }
-            } else {
-                process1 = true;
+            User user = new User(usern.getText());
+            String[] getFullName = nam.getText().split(" ");
+            String Fullnam = "";
+            for (String fullName : getFullName) {
+                Fullnam += fullName.substring(0, 1).toUpperCase() + fullName.substring(1).toLowerCase() + " ";
             }
-            if (process1) {
-                if (fnCheck.length < 2 || (fnCheck[1].length() == 1 && fnCheck.length == 2)) {
-                    if (JOptionPane.showConfirmDialog(null, "Is This Really Your Full Name? : \n" + nam.getText(), "Hunter's Guild Registration Office", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
-                        register = false;
-                        process1 = false;
-                    } else {
-                        register = true;
+            user.FullName = Fullnam;
+            user.BirthDay = mm.getSelectedItem() + " " + dd.getSelectedItem() + " " + yy.getSelectedItem();
+            user.Address = bachou.getText();
+            String a;
+            if (gen1.isSelected()) {
+                a = "Male";
+
+            } else if (gen2.isSelected()) {
+                a = "Female";
+            } else {
+                a = "";
+            }
+            user.Gender = a;
+            if (user.ValidateUserObject()) {
+                File f = new File("users/" + user.UserID);
+                if (!f.exists()) {
+                    if (this.validatePassword()) {
+                        IOFileStream io = new IOFileStream();
+                        io.makeUser(usern.getText().substring(0, 1).toUpperCase() + usern.getText().substring(1).toLowerCase());
+                        boolean getReply = io.register(user, passw.getText());
+                        if (getReply) {
+                            new ProfileViewer(user);
+                            this.dispose();
+                        }
                     }
                 } else {
-                    register = true;
-                }
-            }
-            if (register) {
-                String[] getFullName = nam.getText().split(" ");
-                String Fullnam = "";
-                for (int i = 0; i < getFullName.length; i++) {
-                    Fullnam += getFullName[i].substring(0, 1).toUpperCase() + getFullName[i].substring(1).toLowerCase() + " ";
-                }
-                String a = "";
-                if (gen1.isSelected()) {
-                    a = "Male";
-
-                } else if (gen2.isSelected()) {
-                    a = "Female";
-                }
-                IOFileStream io = new IOFileStream();
-                io.makeUser(usern.getText().substring(0, 1).toUpperCase() + usern.getText().substring(1).toLowerCase());
-                boolean getReply = io.register(Fullnam, usern.getText().substring(0, 1).toUpperCase() + usern.getText().substring(1).toLowerCase(), passw.getText(), a, (String) dd.getSelectedItem(), (String) mm.getSelectedItem(), (String) yy.getSelectedItem(), bachou.getText());
-                if (getReply) {
-                    dispose();
+                    JOptionPane.showMessageDialog(null, "Sorry but username specified is already taken. Please specify a different username", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else if (e.getSource() == ret) {
@@ -164,51 +118,62 @@ public class Register extends JFrame implements ActionListener {
             this.dispose();
         } else if (e.getSource() == mm) {
             int selected = dd.getSelectedIndex();
-            if (mm.getSelectedItem().toString().equals("January") || mm.getSelectedItem().toString().equals("March") || mm.getSelectedItem().toString().equals("May") || mm.getSelectedItem().toString().equals("July") || mm.getSelectedItem().toString().equals("August") || mm.getSelectedItem().toString().equals("October") || mm.getSelectedItem().toString().equals("December")) {
-                dd.removeAllItems();
-                for (int i = 1; i <= 31; i++) {
-                    dd.addItem(i + "");
-                }
-                dd.setSelectedIndex(selected);
-            } else if (mm.getSelectedItem().toString().equals("February")) {
-                dd.removeAllItems();
-                checkLeapYear();
-                if (isLeapYear) {
-                    for (int i = 1; i <= 29; i++) {
+            dd.removeAllItems();
+            switch (mm.getSelectedItem().toString()) {
+                case "January":
+                case "March":
+                case "May":
+                case "July":
+                case "August":
+                case "October":
+                case "December":
+                    for (int i = 1; i <= 31; i++) {
                         dd.addItem(i + "");
                     }
-                    if (selected > 28) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                } else {
-                    for (int i = 1; i <= 28; i++) {
-                        dd.addItem(i + "");
-                    }
-                    if (selected > 27) {
-                        dd.setSelectedIndex(0);
-                    } else {
-                        dd.setSelectedIndex(selected);
-                    }
-                }
-            } else if (mm.getSelectedItem().toString().equals("April") || mm.getSelectedItem().toString().equals("June") || mm.getSelectedItem().toString().equals("September") || mm.getSelectedItem().toString().equals("November")) {
-                dd.removeAllItems();
-                for (int i = 1; i <= 30; i++) {
-                    dd.addItem(i + "");
-                }
-                if (selected > 29) {
-                    dd.setSelectedIndex(0);
-                } else {
                     dd.setSelectedIndex(selected);
-                }
+                    break;
+                case "February":
+                    if (this.isLeapYear()) {
+                        for (int i = 1; i <= 29; i++) {
+                            dd.addItem(i + "");
+                        }
+                        if (selected > 28) {
+                            dd.setSelectedIndex(0);
+                        } else {
+                            dd.setSelectedIndex(selected);
+                        }
+                    } else {
+                        for (int i = 1; i <= 28; i++) {
+                            dd.addItem(i + "");
+                        }
+                        if (selected > 27) {
+                            dd.setSelectedIndex(0);
+                        } else {
+                            dd.setSelectedIndex(selected);
+                        }
+                    }
+                    break;
+                case "April":
+                case "June":
+                case "September":
+                case "November":
+                    for (int i = 1; i <= 30; i++) {
+                        dd.addItem(i + "");
+                    }
+                    if (selected > 29) {
+                        dd.setSelectedIndex(0);
+                    } else {
+                        dd.setSelectedIndex(selected);
+                    }
+                    break;
+                default:
+                    break;
             }
         } else if (e.getSource() == yy) {
             int selected = dd.getSelectedIndex();
             if (mm.getSelectedItem().toString().equals("February")) {
                 dd.removeAllItems();
-                checkLeapYear();
-                if (isLeapYear) {
+                if (isLeapYear()) {
                     for (int i = 1; i <= 29; i++) {
                         dd.addItem(i + "");
                     }
@@ -230,20 +195,30 @@ public class Register extends JFrame implements ActionListener {
             }
         }
     }
-    // wha? why i didnt just return the query result? 
-    void checkLeapYear() {
+    private boolean validatePassword(){
+        if(passw.getText().equals(conf.getText())){
+            if(passw.getText().length() < 6){
+                JOptionPane.showMessageDialog(null, "Password cannot be less than 6 characters", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Password Does not match with confirmation textbox", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    private boolean isLeapYear() {
         if (Integer.parseInt(yy.getSelectedItem().toString()) % 4 != 0) {
-            isLeapYear = false;
+            return false;
         } else if (Integer.parseInt(yy.getSelectedItem().toString()) % 100 != 0) {
-            isLeapYear = true;
-        } else if (Integer.parseInt(yy.getSelectedItem().toString()) % 400 != 0) {
-            isLeapYear = false;
+            return true;
         } else {
-            isLeapYear = true;
+            return (Integer.parseInt(yy.getSelectedItem().toString()) % 400 != 0);
         }
     }
 
-    void content() {
+    private void content() {
         Container con = getContentPane();
         con.setLayout(null);
         Font RegBannerFont = new Font("Comic Sans MS", Font.PLAIN, 17);
@@ -309,5 +284,4 @@ public class Register extends JFrame implements ActionListener {
         con.add(chocola);
         con.add(back);
     }
-
 }

@@ -226,11 +226,14 @@ public class EditProfile extends JDialog implements ActionListener {
             String filePath = "";
             while (!done) {
                 filePath = JOptionPane.showInputDialog(null, "Enter the path of the image file. file must be in .jpg, .png, .gif extension \nExample C:\\Users\\onkyo\\Documents\\shigure.png \n If the picture does not load by 1min, it means it failed to get the image\nUse 100x100pixels picture for best results \n");
-                if (filePath.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Operation Failed: Inputbox is Empty", "Edit Profile", JOptionPane.ERROR_MESSAGE);
-                    done = false;
-                } else {
-                    done = true;
+                switch (filePath) {
+                    case "":
+                        JOptionPane.showMessageDialog(null, "Operation Failed: Inputbox is Empty", "Edit Profile", JOptionPane.ERROR_MESSAGE);
+                        done = false;
+                        break;
+                    default:
+                        done = true;
+                        break;
                 }
             }
             IOFileStream io = new IOFileStream();

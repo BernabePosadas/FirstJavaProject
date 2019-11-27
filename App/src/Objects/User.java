@@ -32,12 +32,12 @@ public class User {
             String[] Info = io.getInfo(this.UserID);
             this.ImagePath = io.getImagePath(this.UserID);
             if (this.ImagePath == null) {
-               this.ImagePath = "DefaultProfilePic.png";
+                this.ImagePath = "DefaultProfilePic.png";
             } else {
                 if (io.checkIfExists(this.ImagePath) == false) {
                     this.ImagePath = "DefaultProfilePic.png";
                     io.savePath(this.UserID, "DefaultProfilePic.png");
-                } 
+                }
             }
             if (Info == null) {
                 JOptionPane.showMessageDialog(null, "Error: Failed to fetch user info.", "Hunter's Guild", JOptionPane.ERROR_MESSAGE);
@@ -53,20 +53,39 @@ public class User {
             this.Requests = io.getRequest(this.UserID);
         }
     }
-    public boolean checkIfFriends(String ID){
-         for(String friends : this.Friends){
-             if(friends.equals(ID)){
-                 return true;
-             }
-         }
-         return false;
+
+    public boolean checkIfFriends(String ID) {
+        for (String friends : this.Friends) {
+            if (friends.equals(ID)) {
+                return true;
+            }
+        }
+        return false;
     }
-    public boolean checkIfHasPendingRequest(String UserID){
-        for(String requests : this.Requests){
-             if(requests.equals(UserID)){
-                 return true;
-             }
-         }
-         return false;
+
+    public boolean checkIfHasPendingRequest(String UserID) {
+        for (String requests : this.Requests) {
+            if (requests.equals(UserID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean ValidateUserObject() {
+        if (this.FullName.equals("")) {
+            JOptionPane.showMessageDialog(null, "Fullname is empty. Please specify your name", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else if (this.UserID.equals("")) {
+            JOptionPane.showMessageDialog(null, "Username is empty. Please specify your username", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else if (this.Gender.equals("")) {
+            JOptionPane.showMessageDialog(null, "No gender is selected. Please specify your geneder", "Hunter's Guild Registration Office", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if(this.Address.equals("")){
+            this.Address = "Not specified";
+        }
+        return true;
     }
 }

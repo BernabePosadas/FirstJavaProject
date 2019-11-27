@@ -1,7 +1,6 @@
 package Interface;
-import Objects.EncryptionKeyClass;
 
 public interface IEncryptionProvider {
-     public byte[] encrypt(EncryptionKeyClass key, byte[] data);
-     public byte[] decrypt(EncryptionKeyClass key, byte[] encryptedData);
+     public byte[] encrypt(byte[] data);
+     public byte[] decrypt(byte[] encryptedData);
 }

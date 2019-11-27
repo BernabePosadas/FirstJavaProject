@@ -1,36 +1,25 @@
 package Objects;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import ConcreteImplementation.MD5ChecksumProvider;
+import Interface.IHashChecksumProvider;
 
 public class EncryptionKeyClass {
 
     private final byte[] Key;
     private final byte[] IV;
+    private final IHashChecksumProvider Hasher;
 
     public EncryptionKeyClass(String Key, String Iv) {
         this.Key = Key.getBytes();
         this.IV = Iv.getBytes();
+        this.Hasher = new MD5ChecksumProvider();
     }
 
-    public byte[] getKey() throws NoSuchAlgorithmException {
-        try{
-            MessageDigest mgds = MessageDigest.getInstance("MD5");
-            byte[] key = mgds.digest(this.Key);
-            return key;
-        }
-        catch(NoSuchAlgorithmException ex){
-            throw ex;
-        }
+    public byte[] getKey() {
+         return this.Hasher.generateHashMessageDigest(this.Key);
     }
-    public byte[] getIV() throws NoSuchAlgorithmException{
-        try{
-            MessageDigest mgds = MessageDigest.getInstance("MD5");
-            byte[] IV = mgds.digest(this.IV);
-            return IV;
-        }
-        catch(NoSuchAlgorithmException ex){
-            throw ex;
-        }
-    } 
+
+    public byte[] getIV() {
+        return this.Hasher.generateHashMessageDigest(this.IV);
+    }
 }
